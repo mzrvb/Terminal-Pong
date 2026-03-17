@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-
 #define BALL_SPEED 20
 
 typedef struct {
