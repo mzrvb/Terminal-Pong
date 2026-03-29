@@ -1,14 +1,12 @@
-#define macros
 CC = gcc
-CFLAGS = -Wall -std=c99
-TARGET = pong
-SRC = $(wildcard *.c)
-OBJ = $(SRC:.c=.o)
+CFLAGS = -Wall -std=c99 -IC:/msys64/ucrt64/include
+TARGET = pong.exe
+SRC = $(wildcard *.c) # grab everything thats a c file int the folder
+OBJ = $(SRC:.c=.o) # imagine a version where all the c files are o files
 all: $(TARGET)
 
-# convert all the c files to o files
 $(TARGET): $(OBJ)
-	$(CC) -o $@ $^ -lm
+	$(CC) -o $@ $^ -LC:/msys64/ucrt64/lib -lmingw32 -lSDL2main -lSDL2 -lm
 
 # compile
 %.o: %.c pong.h 
