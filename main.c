@@ -6,14 +6,12 @@
 // 4. 
 static int MOVEMENT_SPEED = 10;
 
-void playerMovement(SDL_Window * window, SDL_Rect * p1, Uint32 clearcolor, Uint32 color, SDL_Event event, SDL_Surface *surface)
+void playerMovement(SDL_Rect * p1, Uint32 clearcolor, Uint32 color, SDL_Event event, SDL_Surface *surface)
 {
-    SDL_UpdateWindowSurface(window);
-
     if (event.type == SDL_KEYDOWN) // a key is pressed
     {
         int keypressed = event.key.keysym.scancode; // use scancode for physical key location
-        SDL_FillRect(surface, &p1, clearcolor); // clear previous rectangle position
+        SDL_FillRect(surface, p1, clearcolor); // clear previous rectangle position
 
         if (keypressed == SDL_SCANCODE_DOWN)
         {
@@ -26,6 +24,15 @@ void playerMovement(SDL_Window * window, SDL_Rect * p1, Uint32 clearcolor, Uint3
 
         SDL_FillRect(surface, p1, color); // update p1 movement
     } 
+}
+
+void quit(SDL_Event event, int running)
+{
+    if (event.type == SDL_QUIT)
+    {
+        printf("quit\n");
+        running = 0;
+    }
 }
 
 int main(int argc, char* argv[]) { // SDL2 often requires these specific arguments for Windows compatibility
@@ -56,42 +63,16 @@ int main(int argc, char* argv[]) { // SDL2 often requires these specific argumen
 
     // set top and bottom bounce conditions relative to ball spawnpoint
     // set conditions for the left and right of ball to see if hit paddle
-
-
-    SDL_UpdateWindowSurface(window);
-
     int running = 1;
     SDL_Event event;
 
     while (running)
     {
         SDL_PollEvent(&event); // check the event queue, execute the latest event
-        if (event.type == SDL_QUIT)
-        {
-            printf("quit\n");
-            running = 0;
-        }
-        if (event.type == SDL_KEYDOWN) // a key is pressed
-        {
-            int keypressed = event.key.keysym.scancode; // use scancode for physical key location
-            SDL_FillRect(surface, &p1, clearcolor); // clear previous rectangle position
-            /*if (keypressed == SDL_SCANCODE_R) // refresh button for testing
-            {
-                SDL_Rect ball = (SDL_Rect) {315, 235, 10, 10}; // ball
+        
+        quit(event, running);
+        playerMovement(&p1, clearcolor, color, event, surface);
 
-            }*/
-            if (keypressed == SDL_SCANCODE_DOWN)
-            {
-                p1.y+= 10;
-            }
-            else if (keypressed == SDL_SCANCODE_UP)
-            {
-                p1.y-= 10;
-            }
-
-            SDL_FillRect(surface, &p1, color); // update p1 movement
-            SDL_FillRect(surface, &ball, color); // update ball movement
-        } 
         SDL_UpdateWindowSurface(window);
     }
     
