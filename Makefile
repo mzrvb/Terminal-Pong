@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -std=c99 -IC:/msys64/ucrt64/include
-TARGET = pong.exe
+TARGET = p.exe
 SRC = $(wildcard *.c) # grab everything thats a c file int the folder
 OBJ = $(SRC:.c=.o) # imagine a version where all the c files are o files
 all: $(TARGET)
