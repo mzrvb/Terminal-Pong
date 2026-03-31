@@ -6,32 +6,46 @@
 // 4. 
 static int MOVEMENT_SPEED = 10;
 
-void playerMovement(SDL_Rect * p1, Uint32 clearcolor, Uint32 color, SDL_Event event, SDL_Surface *surface)
+void playerMovement(SDL_Rect * player, Uint32 clearcolor, Uint32 color, SDL_Event event, SDL_Surface *surface, int playerbtn)
 {
-    if (event.type == SDL_KEYDOWN) // a key is pressed
+    if (event.type == SDL_KEYDOWN)
     {
         int keypressed = event.key.keysym.scancode; // use scancode for physical key location
-        SDL_FillRect(surface, p1, clearcolor); // clear previous rectangle position
+        SDL_FillRect(surface, player, clearcolor); // clear previous rectangle position
 
-        if (keypressed == SDL_SCANCODE_DOWN)
+        if (playerbtn == 1) // player one controls
         {
-            p1->y+= 10;
+            if (keypressed == SDL_SCANCODE_DOWN)
+            {
+                player->y+= 10;
+            }
+            else if (keypressed == SDL_SCANCODE_UP)
+            {
+                player->y-= 10;
+            }
         }
-        else if (keypressed == SDL_SCANCODE_UP)
+        else if (playerbtn == 2) // player two controls
         {
-            p1->y-= 10;
+            if (keypressed == SDL_SCANCODE_N)
+            {
+                player->y+= 10;
+            }
+            else if (keypressed == SDL_SCANCODE_H)
+            {
+                player->y-= 10;
+            }
         }
-
-        SDL_FillRect(surface, p1, color); // update p1 movement
+        
+        SDL_FillRect(surface, player, color); // update p1 movement
     } 
 }
 
-void quit(SDL_Event event, int running)
+int quit(SDL_Event event, int running)
 {
     if (event.type == SDL_QUIT)
     {
         printf("quit\n");
-        running = 0;
+        return running = 0;
     }
 }
 
@@ -48,8 +62,8 @@ int main(int argc, char* argv[]) { // SDL2 often requires these specific argumen
     SDL_Rect p1 = (SDL_Rect) {40, 40, 20, 80}; // p1 
     SDL_FillRect(surface, &p1, color);
 
-    /*SDL_Rect p2 = (SDL_Rect) {580, 40, 20, 80}; // p2
-    SDL_FillRect(surface, &p2, color);*/
+    SDL_Rect p2 = (SDL_Rect) {580, 40, 20, 80}; // p2
+    SDL_FillRect(surface, &p2, color);
 
     SDL_Rect ball = (SDL_Rect) {315, 235, 10, 10}; // ball
     SDL_FillRect(surface, &ball, color);
@@ -70,8 +84,9 @@ int main(int argc, char* argv[]) { // SDL2 often requires these specific argumen
     {
         SDL_PollEvent(&event); // check the event queue, execute the latest event
         
-        quit(event, running);
-        playerMovement(&p1, clearcolor, color, event, surface);
+        running = quit(event, running);
+        playerMovement(&p1, clearcolor, color, event, surface, 1);
+        playerMovement(&p2, clearcolor, color, event, surface, 2);
 
         SDL_UpdateWindowSurface(window);
     }
