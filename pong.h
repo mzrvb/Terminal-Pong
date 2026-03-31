@@ -1,10 +1,20 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 
-/*typedef struct {
-    int x, y;
-} Ball;
+// static
+#define MOVEMENT_SPEED 10
 
-typedef struct {
-    int top_y, bot_y;
-} Paddle;*/
+// paddle.c
+void paddleMovement(SDL_Rect * player, Uint32 clearcolor, Uint32 color, SDL_Event event, SDL_Surface *surface, int playerbtn);
+
+// supposed to be render.h
+void render(SDL_Surface *surface, SDL_Rect ball, SDL_Rect p1, SDL_Rect p2, Uint32 color);
+typedef struct RenderSDL{
+    SDL_Window *window;
+    SDL_Surface *surface;
+    Uint32 color;
+    Uint32 clearcolor;
+    SDL_Rect p1;
+    SDL_Rect p2;
+    SDL_Rect ball;
+} RenderSDL;
