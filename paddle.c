@@ -3,8 +3,9 @@
 void paddleMovement(SDL_Rect * p1, SDL_Rect * p2, Uint32 clearcolor, Uint32 color, SDL_Surface *surface, const Uint8 *keys)
 {
     SDL_FillRect(surface, p1, clearcolor); // clear previous position
-    SDL_FillRect(surface, p2, clearcolor); // clear previous position
+    SDL_FillRect(surface, p2, clearcolor); 
 
+    // movement conditions using key state method
     if (keys[SDL_SCANCODE_UP]) 
     {
         p1->y -= MOVEMENT_SPEED;
@@ -21,6 +22,8 @@ void paddleMovement(SDL_Rect * p1, SDL_Rect * p2, Uint32 clearcolor, Uint32 colo
     {
         p2->y += MOVEMENT_SPEED;
     }
+
+    // border conditions
     if (p1->y < 0)
     {
         p1->y = 0;
@@ -38,7 +41,6 @@ void paddleMovement(SDL_Rect * p1, SDL_Rect * p2, Uint32 clearcolor, Uint32 colo
         p2->y = 480 - p2->h;
     } 
 
-    SDL_FillRect(surface, p1, color);
-    SDL_FillRect(surface, p2, color);
-
+    SDL_FillRect(surface, p1, color); 
+    SDL_FillRect(surface, p2, color); // update p1 and p2
 }

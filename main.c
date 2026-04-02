@@ -1,16 +1,5 @@
 #include "pong.h"
 
-int quit(SDL_Event event, int running)
-{
-    if (event.type == SDL_QUIT)
-    {
-        printf("Quit\n");
-        return running = 0;
-    }
-
-    return 1;
-}
-
 int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
     SDL_Event event;
     RenderSDL rdr;
@@ -35,11 +24,12 @@ int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
         }
 
         paddleMovement(&rdr.p1, &rdr.p2, rdr.clearcolor, rdr.color, rdr.surface, rdr.keys);
-        SDL_UpdateWindowSurface(rdr.window);
+        ballMovement(&rdr.ball, rdr.clearcolor, rdr.color, rdr.surface, &rdr.p1, &rdr.p2);
 
+        SDL_UpdateWindowSurface(rdr.window);
         SDL_Delay(10);
     }
     
     SDL_Quit();
-    return 0;
+    return 0; // end of program
 }
