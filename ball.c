@@ -30,8 +30,21 @@ int ballMovement(SDL_Rect *ball, Uint32 clearcolor, Uint32 color, SDL_Surface *s
         return 2;
     }
 
-    if (SDL_HasIntersection(ball, p1)) { vel_x = -vel_x; vel_x++; }
-    if (SDL_HasIntersection(ball, p2)) { vel_x = -vel_x; vel_x--; }
+    // collision logic, reflect, 
+    if (SDL_HasIntersection(ball, p1))
+    {
+        vel_x = -vel_x;
+        vel_x++;
+        int offset = (ball->y + ball->h / 2) - (p1->y + p1->h / 2);
+        vel_y = offset / 16;
+    }
+    if (SDL_HasIntersection(ball, p2))
+    {
+        vel_x = -vel_x;
+        vel_x--;
+        int offset = (ball->y + ball->h / 2) - (p2->y + p2->h / 2);
+        vel_y = offset / 16;
+    }
 
     SDL_FillRect(surface, ball, color);
     return 0;
