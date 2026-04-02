@@ -4,7 +4,7 @@ int quit(SDL_Event event, int running)
 {
     if (event.type == SDL_QUIT)
     {
-        printf("quit\n");
+        printf("Quit\n");
         return running = 0;
     }
 
@@ -12,7 +12,7 @@ int quit(SDL_Event event, int running)
 }
 
 int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
-    SDL_Event event; // the entire game is an event
+    SDL_Event event;
     RenderSDL rdr;
     
     // render struct values
@@ -26,19 +26,17 @@ int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
     rdr.ball = (SDL_Rect) {315, 235, 10, 10};
     render(rdr.surface, rdr.ball, rdr.p1, rdr.p2, rdr.color);
 
-
     int running = 1;
     while (running)
     {
-        while (SDL_PollEvent(&event))
+        while (SDL_PollEvent(&event)) // only cares if we press quit, has nothing to do with keyboard state
         {
-            running = quit(event, running); 
+            running = quit(event, running);
         }
 
-        paddleMovement(&rdr.p1, rdr.clearcolor, rdr.color, event, rdr.surface, rdr.keys, 1);
-        paddleMovement(&rdr.p2, rdr.clearcolor, rdr.color, event, rdr.surface, rdr.keys, 2);
-
+        paddleMovement(&rdr.p1, &rdr.p2, rdr.clearcolor, rdr.color, rdr.surface, rdr.keys);
         SDL_UpdateWindowSurface(rdr.window);
+
         SDL_Delay(10);
     }
     

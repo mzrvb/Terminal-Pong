@@ -1,5 +1,5 @@
 #include "pong.h"
-// all the sdl library shit
+// render p1, p2, and ball
 
 void render(SDL_Surface *surface, SDL_Rect ball, SDL_Rect p1, SDL_Rect p2, Uint32 color)
 {
