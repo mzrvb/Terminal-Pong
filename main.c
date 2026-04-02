@@ -15,8 +15,10 @@ int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
     SDL_Event event; // the entire game is an event
     RenderSDL rdr;
     
+    // render struct values
     rdr.window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, 0);
     rdr.surface = SDL_GetWindowSurface(rdr.window);
+    rdr.keys = SDL_GetKeyboardState(NULL);
     rdr.color = 0xffffffff;
     rdr.clearcolor = 0x000000;
     rdr.p1 = (SDL_Rect) {40, 40, 20, 80};
@@ -28,14 +30,16 @@ int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
     int running = 1;
     while (running)
     {
-        running = quit(event, running);
-        // in future game.c loops, calling paddle.c and ball.c logic and stuff here
+        while (SDL_PollEvent(&event))
+        {
+            running = quit(event, running); 
+        }
 
-        SDL_PollEvent(&event); // check the event queue, execute the latest event
-        paddleMovement(&rdr.p1, rdr.clearcolor, rdr.color, event, rdr.surface, 1);
-        paddleMovement(&rdr.p2, rdr.clearcolor, rdr.color, event, rdr.surface, 2);
+        paddleMovement(&rdr.p1, rdr.clearcolor, rdr.color, event, rdr.surface, rdr.keys, 1);
+        paddleMovement(&rdr.p2, rdr.clearcolor, rdr.color, event, rdr.surface, rdr.keys, 2);
 
         SDL_UpdateWindowSurface(rdr.window);
+        SDL_Delay(10);
     }
     
     SDL_Quit();
