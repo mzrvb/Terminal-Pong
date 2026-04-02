@@ -3,8 +3,9 @@
 int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
     SDL_Event event;
     RenderSDL rdr;
+    GameState game;
     
-    // render struct values
+    // render sdl struct values
     rdr.window = SDL_CreateWindow("Pong", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, 0);
     rdr.surface = SDL_GetWindowSurface(rdr.window);
     rdr.keys = SDL_GetKeyboardState(NULL);
@@ -16,6 +17,8 @@ int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
     render(rdr.surface, rdr.ball, rdr.p1, rdr.p2, rdr.color);
 
     int running = 1;
+    game.score_p1 = 0;
+    game.score_p2 = 0;
     while (running)
     {
         while (SDL_PollEvent(&event)) // only cares if we press quit, has nothing to do with keyboard state
@@ -24,7 +27,8 @@ int main(int argc, char* argv[]) { // SDL2 argument for Windows compatability
         }
 
         paddleMovement(&rdr.p1, &rdr.p2, rdr.clearcolor, rdr.color, rdr.surface, rdr.keys);
-        ballMovement(&rdr.ball, rdr.clearcolor, rdr.color, rdr.surface, &rdr.p1, &rdr.p2);
+        int scored = ballMovement(&rdr.ball, rdr.clearcolor, rdr.color, rdr.surface, &rdr.p1, &rdr.p2);
+        gameLogic(scored, &game, &running);
 
         SDL_UpdateWindowSurface(rdr.window);
         SDL_Delay(10);
